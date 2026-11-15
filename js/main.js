@@ -32,7 +32,7 @@ const clocks = $$('[data-clock]');
 const fmt = new Intl.DateTimeFormat('es-EC', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'America/Guayaquil' });
 const tick = () => clocks.forEach((c) => { c.textContent = fmt.format(new Date()); });
 tick();
-setInterval(tick, 20000);
+setInterval(tick, 1000);
 
 /* ---- Menú en teléfono ---- */
 const menuBtn = $('.menu-btn');
@@ -47,7 +47,7 @@ menu?.addEventListener('click', (e) => {
 });
 
 /* ---- Entradas al hacer scroll ---- */
-$$('.moment, .tile, .tile-f').forEach((el) => el.classList.add('reveal'));
+$$('.moment, .tile, .f-big, .f-col, .f-mark, .f-legal').forEach((el) => el.classList.add('reveal'));
 const io = new IntersectionObserver((entries) => {
   const shown = entries.filter((e) => e.isIntersecting);
   shown.forEach((e, i) => {
