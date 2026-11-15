@@ -170,17 +170,20 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
 .m4 img { margin-top: 70px; } .m5 img { margin-top: 120px; } .m6 img { margin-top: 30px; }
 
 /* ---------- Archivo ---------- */
-.archive { display: grid; padding: var(--gap-sec) var(--m) calc(var(--gap-sec) * 0.7); }
+.archive { display: grid; padding: 0 var(--m); }
+/* Fondo fijo: primer plano del lente, visible en los huecos del mosaico */
+.archive-bg { position: sticky; top: 0; z-index: 0; align-self: start; height: 100svh; margin: 0 calc(var(--m) * -1); overflow: hidden; pointer-events: none; }
+.archive-bg img { width: 100%; height: 100%; object-fit: cover; filter: brightness(1.25); }
 .archive > * { grid-area: 1 / 1; }
 .archive-card {
-  position: sticky; top: 16px; z-index: 3; align-self: start;
+  position: sticky; top: 16px; z-index: 3; align-self: start; margin-top: var(--gap-sec);
   width: min(360px, calc((100% - 10px) / 3 - 16px));
   background: var(--ink); color: var(--bg); padding: 14px 16px 16px;
   font-size: var(--small); line-height: 1.35;
 }
 .archive-card h2 { font-size: var(--lead); font-weight: 500; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 10px; }
 .archive-note { margin-top: 2px; }
-.tiles { --cell: calc((100vw - var(--m) * 2 - 10px) / 6); display: grid; grid-template-columns: repeat(6, 1fr); grid-auto-rows: calc(var(--cell) * 1.27); gap: 2px; }
+.tiles { --cell: calc((100vw - var(--m) * 2 - 10px) / 6); display: grid; grid-template-columns: repeat(6, 1fr); grid-auto-rows: calc(var(--cell) * 1.27); gap: 2px; position: relative; z-index: 1; padding: var(--gap-sec) 0 calc(var(--gap-sec) * 0.7); }
 .tile { position: relative; overflow: hidden; background: var(--surface); }
 .tile img { width: 100%; height: 100%; object-fit: cover; transition: filter 0.35s, transform 0.6s var(--ease); }
 .tile span { position: absolute; left: 0; bottom: 0; background: var(--bg); color: var(--ink); font-size: var(--small); line-height: 1.2; padding: 5px 8px 4px; }
@@ -359,8 +362,9 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
   .m4 img { margin-top: 40px; } .m5 img { margin-top: 60px; } .m6 img { margin-top: 32px; }
 
   .archive { display: block; }
-  .archive-card { position: static; width: auto; margin-bottom: 2px; }
-  .tiles { --cell: calc((100vw - var(--m) * 2 - 4px) / 3); grid-template-columns: repeat(3, 1fr); grid-auto-flow: row; }
+  .archive-bg { margin-bottom: -100svh; }
+  .archive-card { position: relative; top: auto; width: auto; margin-bottom: 2px; }
+  .tiles { --cell: calc((100vw - var(--m) * 2 - 4px) / 3); grid-template-columns: repeat(3, 1fr); grid-auto-flow: row; padding-top: 0; }
   .tile:nth-child(n) { grid-area: auto; }
   .tile:nth-child(6n + 1) { grid-column: 2 / span 2; grid-row: span 2; }
   .tile:nth-child(6n + 2) { grid-column: 1; }

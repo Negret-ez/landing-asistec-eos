@@ -89,7 +89,7 @@ function studioEnv(renderer) {
   return tex;
 }
 
-export function initLens(canvas, { getProgress, reduced, onReady }) {
+export function initLens(canvas, { getProgress, reduced, onReady, pose }) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -268,6 +268,11 @@ export function initLens(canvas, { getProgress, reduced, onReady }) {
       const fit = Math.min(0.95, (halfW * 2 * 0.64) / 7.9);
       rig.scale.setScalar(lerp(1.2, fit, e));
       rig.position.set(lerp(halfW * 0.38, halfW * 0.3, e), lerp(-0.75, -0.55, e), 0);
+    }
+    if (pose) { // encuadre fijo, usado para generar imágenes del lente
+      rig.rotation.set(pose.rx, pose.ry, 0);
+      rig.scale.setScalar(pose.s);
+      rig.position.set(pose.x, pose.y, 0);
     }
     setAperture(reduced ? 0.34 : 0.3 + 0.16 * Math.sin(t * 0.7));
     renderer.render(scene, camera);
