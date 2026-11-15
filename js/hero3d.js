@@ -240,7 +240,7 @@ export function initLens(canvas, { getProgress, reduced, onReady }) {
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
-    portrait = w / h < 0.9;
+    portrait = w / h < 1.15;
     draw();
   }
 
