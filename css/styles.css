@@ -66,6 +66,11 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
 .h-small { font-size: var(--lead); font-weight: 500; line-height: 1.2; letter-spacing: -0.02em; }
 .sec { padding: var(--gap-sec) var(--m) 0; }
 
+/* Bandas claras: mismas piezas, tinta y fondo invertidos */
+.light { --bg: #e9e9e6; --ink: #0b0c0c; --muted: #55574f; --surface: #dcdcd8; --surface-2: #cfcfca; background: var(--bg); color: var(--ink); }
+.light :focus-visible { outline-color: var(--ink); }
+.services.light, .faq.light { padding-bottom: var(--gap-sec); }
+
 /* ---------- Cabecera ---------- */
 .top {
   position: absolute; inset: 0 0 auto 0; z-index: 20;
@@ -152,7 +157,7 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
 .m4 img { margin-top: 70px; } .m5 img { margin-top: 120px; } .m6 img { margin-top: 30px; }
 
 /* ---------- Archivo ---------- */
-.archive { display: grid; padding: var(--gap-sec) var(--m) 0; }
+.archive { display: grid; padding: var(--gap-sec) var(--m) calc(var(--gap-sec) * 0.7); }
 .archive > * { grid-area: 1 / 1; }
 .archive-card {
   position: sticky; top: 16px; z-index: 3; align-self: start;
@@ -202,7 +207,7 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
 .faq-text strong { font-weight: 500; color: var(--ink); }
 
 /* ---------- Contacto ---------- */
-.contact { margin-top: var(--gap-sec); background: var(--accent); color: var(--accent-ink); padding: 48px var(--m) 72px; overflow: hidden; }
+.contact { background: var(--accent); color: var(--accent-ink); padding: 48px var(--m) 72px; overflow: hidden; }
 .strip { margin: 0 calc(var(--m) * -1); overflow: hidden; }
 .strip-track { display: flex; gap: 8px; width: max-content; animation: drift 70s linear infinite; }
 .strip img { height: 150px; width: auto; filter: grayscale(1); }
