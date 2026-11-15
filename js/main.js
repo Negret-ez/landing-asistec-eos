@@ -48,15 +48,29 @@ menu?.addEventListener('click', (e) => {
 
 /* ---- Entradas al hacer scroll ---- */
 $$('.moment, .tile, .f-big, .f-col, .f-mark, .f-legal').forEach((el) => el.classList.add('reveal'));
-const io = new IntersectionObserver((entries) => {
-  const shown = entries.filter((e) => e.isIntersecting);
-  shown.forEach((e, i) => {
-    e.target.style.setProperty('--d', Math.min(i, 6) * 0.075 + 's');
-    e.target.classList.add('in');
-    io.unobserve(e.target);
+// Se revisa la posición en cada scroll (sin IntersectionObserver): todo lo que ya está
+// en pantalla o quedó arriba tras un salto se muestra, así nada se queda oculto.
+let pending = $$('.reveal');
+function revealCheck() {
+  const limit = innerHeight * 0.95;
+  let i = 0;
+  pending = pending.filter((el) => {
+    if (el.getBoundingClientRect().top > limit) return true;
+    el.style.setProperty('--d', Math.min(i++, 6) * 0.075 + 's');
+    el.classList.add('in');
+    return false;
   });
-}, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
-$$('.reveal').forEach((el) => io.observe(el));
+  if (!pending.length) {
+    removeEventListener('scroll', revealQueue);
+    removeEventListener('resize', revealQueue);
+  }
+}
+const revealQueue = () => revealCheck();
+addEventListener('scroll', revealQueue, { passive: true });
+addEventListener('resize', revealQueue);
+addEventListener('load', revealCheck);
+revealCheck();
+$('[data-row]')?.addEventListener('scroll', revealQueue, { passive: true });
 
 /* ---- Servicios: descripción en un punto fijo ---- */
 const svcDesc = $('[data-svc-desc]');
