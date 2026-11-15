@@ -1,0 +1,5 @@
+.env*
+.claude
+.taste-skill
+.tmp
+README.md
