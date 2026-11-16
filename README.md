@@ -1,6 +1,6 @@
-# Asistec EOS — landing de reparación de cámaras y fotografía (Quito)
+# Asistec EOS — landing del taller de reparación de cámaras y lentes (Quito)
 
-Landing page para **Esteban Negrete**, técnico que repara cámaras y lentes a domicilio en Quito (sin local físico) y que además trabaja como fotógrafo.
+Landing page para **Esteban Negrete**, técnico que repara cámaras y lentes a domicilio en Quito (sin local físico) y consigue repuestos. Su trabajo como fotógrafo irá en una página aparte, a pedido del cliente.
 
 **Demo en vivo:** https://asistec-eos.vercel.app
 
@@ -10,12 +10,13 @@ Landing page para **Esteban Negrete**, técnico que repara cámaras y lentes a d
 
 ## Qué problema resuelve
 
-Esteban no tiene mostrador: sus clientes lo encuentran por recomendación y por WhatsApp. La página le da una presencia profesional que explica cómo trabaja (retiro, diagnóstico, presupuesto, reparación y entrega), muestra su trabajo fotográfico y lleva cada consulta directo a WhatsApp con el mensaje ya escrito.
+Esteban no tiene mostrador: sus clientes lo encuentran por recomendación y por WhatsApp. La página le da una presencia profesional que explica cómo trabaja (retiro, diagnóstico, presupuesto, reparación y entrega), lista qué arregla y qué repuestos consigue, y lleva cada consulta directo a WhatsApp con el mensaje ya escrito.
 
 ## Qué tiene
 
 - **Hero 3D**: un lente construido por código con three.js (sin modelos externos) que se desarma pieza por pieza al hacer scroll y vuelve a armarse.
-- **Archivo fotográfico**: mosaico disperso con huecos, desenfoque del resto al pasar el cursor y visor a pantalla completa con teclado.
+- **Proceso en seis pasos**: fila que se arrastra, del primer mensaje a la entrega.
+- **Banda del diagnóstico**: primer plano del lente con el compromiso de presupuesto por escrito antes de reparar.
 - **Servicios como enlaces**: cada servicio abre WhatsApp con un mensaje específico.
 - **Contacto sin backend**: el formulario arma el mensaje en el navegador y abre WhatsApp; la página no guarda datos personales.
 

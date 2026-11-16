@@ -169,7 +169,17 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
 .m1 img { margin-top: 110px; } .m2 img { margin-top: 40px; } .m3 img { margin-top: 140px; }
 .m4 img { margin-top: 70px; } .m5 img { margin-top: 120px; } .m6 img { margin-top: 30px; }
 
-/* ---------- Archivo ---------- */
+/* ---------- Banda del diagnóstico: primer plano del lente con una tarjeta ---------- */
+.band { position: relative; display: grid; align-items: end; min-height: min(86svh, 900px); margin-top: var(--gap-sec); padding: var(--m); overflow: hidden; }
+.band-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(1.25); }
+.band-card { position: relative; width: min(520px, 100%); background: var(--ink); color: var(--bg); padding: 22px 24px 26px; }
+.band-card h2 { font-size: var(--head); font-weight: 400; line-height: 1.08; letter-spacing: -0.03em; }
+.band-card p { margin-top: 16px; max-width: 40ch; }
+.band-card a { display: inline-block; margin-top: 22px; font-weight: 500; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; }
+.band-card a:hover { text-decoration-color: var(--accent-2); }
+.band-card :focus-visible { outline-color: var(--bg); }
+
+/* ---------- Archivo (sin uso en la página del taller; queda para la página de fotografía) ---------- */
 .archive { display: grid; padding: 0 var(--m); }
 /* Fondo fijo: primer plano del lente, visible en los huecos del mosaico */
 .archive-bg { position: sticky; top: 0; z-index: 0; align-self: start; height: 100svh; margin: 0 calc(var(--m) * -1); overflow: hidden; pointer-events: none; }
@@ -360,6 +370,9 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
   .moment { flex-basis: 72vw; }
   .m1 img { margin-top: 56px; } .m2 img { margin-top: 32px; } .m3 img { margin-top: 64px; }
   .m4 img { margin-top: 40px; } .m5 img { margin-top: 60px; } .m6 img { margin-top: 32px; }
+
+  .band { min-height: 72svh; }
+  .band-card { padding: 18px 18px 22px; }
 
   .archive { display: block; }
   .archive-bg { margin-bottom: -100svh; }

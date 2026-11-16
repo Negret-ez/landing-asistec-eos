@@ -120,7 +120,7 @@ if (row) {
   row.addEventListener('dragstart', (e) => e.preventDefault());
 }
 
-/* ---- Archivo: visor de fotos ---- */
+/* ---- Archivo: visor de fotos (la página del taller no lo usa; queda para la de fotografía) ---- */
 const box = $('[data-box]');
 const tiles = $$('.tile');
 if (box && tiles.length && typeof box.showModal === 'function') {
