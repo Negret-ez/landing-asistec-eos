@@ -13,7 +13,8 @@ Proyecto de un cliente de la agencia. Aplican las reglas generales de `../CLAUDE
 Esteban quiere **dos páginas separadas**: una del taller (cámaras, lentes, repuestos) y otra de fotografía.
 
 - **Rama `master` = la demo original** (taller + fotografía + archivo de fotos). Es la que está publicada en https://asistec-eos.vercel.app. **A Joel le gusta y la usa como ejemplo para mostrar a clientes: no modificarla ni volver a desplegar encima.**
-- **Rama `taller` = la página nueva solo del taller.** Aquí se trabaja. Todavía no está publicada; cuando toque, va en un proyecto de Vercel aparte para no pisar la demo.
+- **Rama `taller` = la página nueva solo del taller.** Aquí se trabaja. Publicada en https://taller-asistec-eos.vercel.app (proyecto `taller-asistec-eos` en Vercel, creado solo para esto; no tiene repositorio propio en GitHub).
+- **Cómo publicar el taller sin pisar la demo:** la carpeta `.vercel` sigue enlazada a la demo (`asistec-eos`), así que un `vercel deploy` normal la sobrescribiría. Desde la rama `taller` se publica así: `VERCEL_ORG_ID=team_aQ6BKzTfzQ25wCgumhoe5KLP VERCEL_PROJECT_ID=prj_bM5hSTM3o92tRDO9zsgpdQ8COgt5 npx vercel deploy --prod --yes < /dev/null`. Comprobar antes con `git branch --show-current`.
 - La página de fotografía está por hacer (puede reutilizar el archivo y el visor de `master`).
 
 Lo que sigue en este archivo describe la demo original, salvo la sección «Página del taller».
