@@ -37,16 +37,12 @@ Proyecto de un cliente de la agencia. Aplican las reglas generales de `../CLAUDE
    - Sobre y Servicios "muy sobrios": se añadieron imágenes, líneas divisorias y títulos más grandes.
    - Huecos negros del archivo: fondo fijo con un primer plano del lente 3D.
 
-5. **Dos páginas separadas (pedido de Esteban, noviembre 2026):** una para el taller (cámaras, lentes y repuestos) y otra para fotografía. No quiere todo en una.
-   - `index.html` es ahora **solo el taller**: se quitó el archivo de fotos, el visor, la columna Fotografía (ahora es **Repuestos**) y toda mención a sesiones de fotos. Donde estaba el archivo hay una banda (`.band`, `#diagnostico`) con el primer plano del lente y una tarjeta.
-   - **La página de fotografía está por hacer.** El CSS del archivo (`.archive`, `.tiles`, `.box`) y el visor en `main.js` se dejaron a propósito para reutilizarlos ahí, igual que `assets/img/g/`.
-
 ## Diseño
 
 - **Paleta** (tokens en `css/styles.css`): fondo `#0b0c0c`, tinta `#e9e9e6`, gris `#a3a59f`, acento ámbar `#f5a623` (la escala en pies grabada en los lentes). Un solo acento.
 - **Bandas claras**: clase `.light` en una sección invierte los tokens (fondo `#e9e9e6`, tinta negra). No se usa blanco puro.
 - **Tipografía**: Switzer (Fontshare), pesos 400 y 500. Cinco tamaños: `--small`, `--body`, `--lead`, `--head` y el nombre gigante (`--fit`, calculado en JS para ocupar el ancho).
-- **Orden y fondo de las secciones**: Hero (negro) → Sobre (claro) → Servicios (claro) → Proceso (negro) → Diagnóstico (banda con el lente) → Preguntas (claro) → Contacto (ámbar) → Pie (negro).
+- **Orden y fondo de las secciones**: Hero (negro) → Sobre (claro) → Servicios (claro) → Proceso (negro) → Archivo (negro con lente de fondo) → Preguntas (claro) → Contacto (ámbar) → Pie (negro).
 - Botones cuadrados y planos; sin degradados, sombras ni monoespaciada.
 - **Líneas finas**: Joel las pidió en Sobre y Servicios. Van en contra de la regla del skill de diseño, pero se quedan (marcadas con `taste-skill-ignore`).
 - Se construyó con el skill `design-taste-frontend` (dirección "contact-sheet", semilla 382549982). Su inspector se corre con `node <skill>/scripts/inspect.mjs http://localhost:4173/`.
