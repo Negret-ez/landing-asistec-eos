@@ -47,7 +47,7 @@ menu?.addEventListener('click', (e) => {
 });
 
 /* ---- Entradas al hacer scroll ---- */
-$$('.moment, .tile, .f-big, .f-col, .f-mark, .f-legal').forEach((el) => el.classList.add('reveal'));
+$$('.chap, .f-big, .f-col, .f-mark, .f-legal').forEach((el) => el.classList.add('reveal'));
 // Se revisa la posición en cada scroll (sin IntersectionObserver): todo lo que ya está
 // en pantalla o quedó arriba tras un salto se muestra, así nada se queda oculto.
 let pending = $$('.reveal');
@@ -70,89 +70,57 @@ addEventListener('scroll', revealQueue, { passive: true });
 addEventListener('resize', revealQueue);
 addEventListener('load', revealCheck);
 revealCheck();
-$('[data-row]')?.addEventListener('scroll', revealQueue, { passive: true });
 
-/* ---- Servicios: descripción en un punto fijo ---- */
-const svcDesc = $('[data-svc-desc]');
-if (svcDesc) {
-  const base = svcDesc.textContent;
-  $$('.svc-col a').forEach((a) => {
-    const show = () => { svcDesc.textContent = a.dataset.desc; };
-    const hide = () => { svcDesc.textContent = base; };
-    a.addEventListener('mouseenter', show);
-    a.addEventListener('focus', show);
-    a.addEventListener('mouseleave', hide);
-    a.addEventListener('blur', hide);
-  });
+/* ---- Fallas: vitrina con el lente 3D ---- */
+// TODO: dato real — textos de muestra; confirmar con Esteban.
+// Cada falla lleva sus dos líneas de título, una frase, el mensaje de WhatsApp y la postura del lente:
+// rx/ry giro, s tamaño, y altura, e cuánto se desarma (0 a 1), ap apertura del diafragma.
+const FAULTS = {
+  hongos: { l1: 'Hongos', l2: 'en el cristal', blurb: 'Manchas como telarañas dentro del vidrio. El clima de Quito las adora.', wa: 'Hola Esteban, mi lente tiene hongos.', pose: { rx: 0.14, ry: -0.5, s: 1.15, y: 0.3, e: 0.16, ap: 0.5 } },
+  enfoque: { l1: 'Enfoque', l2: 'que no llega', blurb: 'Enfoca delante, detrás o no enfoca. Se calibra con tu cámara puesta.', wa: 'Hola Esteban, mi lente no enfoca bien.', pose: { rx: 0.2, ry: -1.05, s: 0.95, y: 0.3, e: 0.38, ap: 0.36 } },
+  diafragma: { l1: 'Diafragma', l2: 'trabado', blurb: 'Láminas con aceite, fotos quemadas. Se desarma, se limpia y vuelve a cerrar.', wa: 'Hola Esteban, el diafragma de mi lente está trabado.', pose: { rx: 0.06, ry: -0.2, s: 1.2, y: 0.3, e: 0, ap: 0.1 } },
+  sensor: { l1: 'Sensor', l2: 'con manchas', blurb: 'Puntos grises en cada cielo. Limpieza en húmedo, revisada con lupa.', wa: 'Hola Esteban, necesito una limpieza de sensor.', pose: { rx: -0.1, ry: 2.55, s: 1.15, y: 0.3, e: 0.14, ap: 0.4 } },
+  obturador: { l1: 'Obturador', l2: 'cansado', blurb: 'Franjas negras o un error al disparar. Miles de disparos pasan factura.', wa: 'Hola Esteban, mi cámara tiene un problema de obturador.', pose: { rx: 0.2, ry: -1.3, s: 1, y: 0.3, e: 1, ap: 0.3 } },
+  golpes: { l1: 'Golpes', l2: 'y caídas', blurb: 'Una caída, una bayoneta doblada. Se endereza lo que se puede y se cambia lo que no.', wa: 'Hola Esteban, mi equipo se golpeó.', pose: { rx: -0.22, ry: 3.75, s: 0.95, y: 0.3, e: 0.42, ap: 0.3 } },
+};
+const faults = $('[data-faults]');
+let faultPose = FAULTS.hongos.pose;
+let faultLens = null;
+if (faults) {
+  const pills = $$('[data-fault]', faults);
+  const title = $('.st-title', faults);
+  const blurb = $('[data-f-blurb]', faults);
+  const replay = (el) => { el.classList.remove('swap'); void el.offsetWidth; el.classList.add('swap'); };
+  const pick = (btn) => {
+    const f = FAULTS[btn.dataset.fault];
+    if (!f || btn.getAttribute('aria-pressed') === 'true') return;
+    pills.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+    $('[data-f-l1]', faults).textContent = f.l1;
+    $('[data-f-l2]', faults).textContent = f.l2;
+    $('[data-f-num]', faults).textContent = pills.indexOf(btn) + 1;
+    blurb.textContent = f.blurb;
+    $('[data-f-go]', faults).href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(f.wa)}`;
+    faultPose = f.pose;
+    replay(title);
+    replay(blurb);
+    if (reduced) faultLens?.refresh();
+  };
+  pills.forEach((b) => b.addEventListener('click', () => pick(b)));
+  // Enlace directo a una falla: /?falla=sensor#fallas
+  const wanted = new URLSearchParams(location.search).get('falla');
+  const first = pills.find((b) => b.dataset.fault === wanted);
+  if (first) pick(first);
 }
 
-/* ---- Proceso: fila que se arrastra ---- */
-const row = $('[data-row]');
-const bar = $('[data-row-bar]');
-if (row) {
-  const update = () => {
-    const max = row.scrollWidth - row.clientWidth;
-    const seen = row.clientWidth / row.scrollWidth;
-    const p = max > 0 ? row.scrollLeft / max : 1;
-    bar?.style.setProperty('--p', (seen + (1 - seen) * p).toFixed(3));
-  };
-  const step = (dir) => row.scrollBy({ left: dir * 312, behavior: reduced ? 'auto' : 'smooth' });
-  row.addEventListener('scroll', update, { passive: true });
-  addEventListener('resize', update);
-  $('[data-row-prev]')?.addEventListener('click', () => step(-1));
-  $('[data-row-next]')?.addEventListener('click', () => step(1));
-  update();
-
-  let drag = null;
-  row.addEventListener('pointerdown', (e) => {
-    if (e.pointerType !== 'mouse') return;
-    drag = { x: e.clientX, left: row.scrollLeft };
-    row.style.scrollSnapType = 'none';
-    row.style.cursor = 'grabbing';
-  });
-  addEventListener('pointermove', (e) => { if (drag) row.scrollLeft = drag.left - (e.clientX - drag.x); });
-  addEventListener('pointerup', () => {
-    if (!drag) return;
-    drag = null;
-    row.style.scrollSnapType = '';
-    row.style.cursor = '';
-  });
-  row.addEventListener('dragstart', (e) => e.preventDefault());
-}
-
-/* ---- Archivo: visor de fotos ---- */
-const box = $('[data-box]');
-const tiles = $$('.tile');
-if (box && tiles.length && typeof box.showModal === 'function') {
-  const img = $('[data-box-img]', box);
-  const title = $('[data-box-title]', box);
-  const count = $('[data-box-count]', box);
-  let at = 0;
-  const show = (i) => {
-    at = (i + tiles.length) % tiles.length;
-    const t = tiles[at];
-    const thumb = $('img', t);
-    img.src = t.getAttribute('href');
-    img.alt = thumb.alt;
-    img.width = thumb.width;
-    img.height = thumb.height;
-    title.textContent = `${t.dataset.title}, ${t.dataset.year}`;
-    count.textContent = `· ${at + 1} de ${tiles.length}`;
-  };
-  tiles.forEach((t, i) => t.addEventListener('click', (e) => {
-    e.preventDefault();
-    show(i);
-    box.showModal();
-  }));
-  $('[data-box-prev]', box).addEventListener('click', () => show(at - 1));
-  $('[data-box-next]', box).addEventListener('click', () => show(at + 1));
-  $('[data-box-close]', box).addEventListener('click', () => box.close());
-  box.addEventListener('close', () => tiles[at]?.focus());
-  box.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') show(at - 1);
-    if (e.key === 'ArrowRight') show(at + 1);
-  });
-  box.addEventListener('click', (e) => { if (e.target === box) box.close(); });
+/* ---- Botón flotante: visible entre el inicio y el contacto ---- */
+const float = $('[data-float]');
+const contact = $('#contacto');
+function floatCheck() {
+  const heroEl = $('[data-hero]');
+  if (!float || !heroEl || !contact) return;
+  const past = heroEl.getBoundingClientRect().bottom < innerHeight * 0.5;
+  const near = contact.getBoundingClientRect().top < innerHeight * 0.75;
+  float.classList.toggle('on', past && !near);
 }
 
 /* ---- Contacto: arma el mensaje y abre WhatsApp (no se guarda nada) ---- */
@@ -200,9 +168,10 @@ function onScroll() {
     line.classList.add('swap');
   }
 }
-addEventListener('scroll', onScroll, { passive: true });
-addEventListener('resize', onScroll);
-onScroll();
+const onMove = () => { onScroll(); floatCheck(); };
+addEventListener('scroll', onMove, { passive: true });
+addEventListener('resize', onMove);
+onMove();
 
 const canvas = $('[data-lens]');
 if (canvas && hero) {
@@ -210,6 +179,8 @@ if (canvas && hero) {
     try {
       const { initLens } = await import('./hero3d.js');
       initLens(canvas, { getProgress: () => progress, reduced, onReady: () => root.classList.add('lens-on') });
+      const fc = $('[data-fault-lens]');
+      if (fc) faultLens = initLens(fc, { getPose: () => faultPose, reduced, onReady: () => root.classList.add('faults-on') });
     } catch (err) {
       root.classList.add('no-webgl');
     }

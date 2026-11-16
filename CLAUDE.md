@@ -8,6 +8,26 @@ Proyecto de un cliente de la agencia. Aplican las reglas generales de `../CLAUDE
 - **Nombre comercial "Asistec EOS": sin confirmar.** Se tomó del nombre de la carpeta. "EOS" es marca de Canon; conviene que Esteban lo tenga presente.
 - La página es una **demo para mostrársela a Esteban**. Todavía no hay datos reales del negocio.
 
+## Dos versiones (noviembre 2026) — leer antes de tocar nada
+
+Esteban quiere **dos páginas separadas**: una del taller (cámaras, lentes, repuestos) y otra de fotografía.
+
+- **Rama `master` = la demo original** (taller + fotografía + archivo de fotos). Es la que está publicada en https://asistec-eos.vercel.app. **A Joel le gusta y la usa como ejemplo para mostrar a clientes: no modificarla ni volver a desplegar encima.**
+- **Rama `taller` = la página nueva solo del taller.** Aquí se trabaja. Todavía no está publicada; cuando toque, va en un proyecto de Vercel aparte para no pisar la demo.
+- La página de fotografía está por hacer (puede reutilizar el archivo y el visor de `master`).
+
+Lo que sigue en este archivo describe la demo original, salvo la sección «Página del taller».
+
+## Página del taller (rama `taller`)
+
+- Joel rechazó una primera versión que solo recortaba la demo. Lo único que le gusta de la demo es el **inicio con el lente 3D**: se conserva tal cual.
+- El resto se inspira en **grail-app.com**: capítulos numerados («Sobre… / Capítulo 0N»), titulares gigantes en serif y mayúsculas (Boska, de Fontshare), botones en píldora y un botón flotante de WhatsApp.
+- Su parte favorita de Grail es la vitrina de personajes. Aquí es la sección **Fallas** (`.stage`, `#fallas`): el lente 3D al centro, el título de dos líneas cruzándolo (una por detrás y otra por delante), número grande arriba a la derecha y seis píldoras que cambian texto y postura del lente. Los textos y posturas están en `FAULTS`, en `js/main.js`. `/?falla=sensor` abre una falla concreta.
+- `initLens` en `js/hero3d.js` acepta `getPose` (postura objetivo) para esa vitrina; sin esa opción se comporta como en el inicio.
+- Orden: Inicio (negro) → 01 Taller (claro) → 02 Fallas (negro) → 03 Proceso (claro) → 04 Repuestos (negro) → 05 Preguntas (claro) → 06 Contacto (ámbar) → Pie.
+- Todo el contenido sigue siendo de muestra (`TODO: dato real`), incluidas las seis fallas y la lista de repuestos.
+- Para capturas cuando el panel del navegador no dibuja: Chrome sin interfaz solo captura el principio de la página, así que se generan páginas temporales con una sola sección y se borran después.
+
 ## Dónde está todo
 
 | Qué | Dónde |

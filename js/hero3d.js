@@ -89,7 +89,7 @@ function studioEnv(renderer) {
   return tex;
 }
 
-export function initLens(canvas, { getProgress, reduced, onReady, pose }) {
+export function initLens(canvas, { getProgress = () => 0, reduced, onReady, pose, getPose }) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -252,14 +252,22 @@ export function initLens(canvas, { getProgress, reduced, onReady, pose }) {
 
   let p = getProgress();
   let t = 0;
+  // Modo vitrina: getPose() entrega la postura deseada y el lente se desliza hacia ella.
+  const cur = getPose ? { ...getPose() } : null;
   function draw() {
-    const e = smooth(0.06, 0.5, p) * (1 - smooth(0.74, 0.97, p)); // se abre y vuelve a armarse
+    const e = cur ? cur.e : smooth(0.06, 0.5, p) * (1 - smooth(0.74, 0.97, p)); // se abre y vuelve a armarse
     const halfW = Math.tan((camera.fov * Math.PI) / 360) * camera.position.z * camera.aspect;
 
     parts.forEach(({ g, y, spread }) => { g.position.y = y + spread * e; });
     lens.rotation.y = t * 0.12 + p * 2.2;
 
-    if (portrait) {
+    if (cur) {
+      const len = 2.1 + 6 * e;
+      const wide = len * Math.abs(Math.sin(cur.ry)) + 2.15 * Math.abs(Math.cos(cur.ry));
+      rig.rotation.set(cur.rx + pointer.sy * 0.08, cur.ry + pointer.sx * 0.14, 0);
+      rig.scale.setScalar(Math.min(cur.s, (halfW * 2 * 0.86) / wide));
+      rig.position.set(0, cur.y, 0);
+    } else if (portrait) {
       rig.rotation.set(lerp(0.2, -Math.PI / 2 + 0.42, e) + pointer.sy * 0.08, lerp(-0.5, -0.3, e) + pointer.sx * 0.12, 0);
       rig.scale.setScalar(lerp(0.74, 0.38, e));
       rig.position.set(lerp(0.15, 0, e), lerp(-1.25, -1.1, e), 0);
@@ -274,7 +282,8 @@ export function initLens(canvas, { getProgress, reduced, onReady, pose }) {
       rig.scale.setScalar(pose.s);
       rig.position.set(pose.x, pose.y, 0);
     }
-    setAperture(reduced ? 0.34 : 0.3 + 0.16 * Math.sin(t * 0.7));
+    if (cur) setAperture(cur.ap + (reduced ? 0 : 0.025 * Math.sin(t * 0.7)));
+    else setAperture(reduced ? 0.34 : 0.3 + 0.16 * Math.sin(t * 0.7));
     renderer.render(scene, camera);
   }
 
@@ -287,6 +296,11 @@ export function initLens(canvas, { getProgress, reduced, onReady, pose }) {
     last = now;
     t += dt;
     p = lerp(p, getProgress(), 1 - Math.pow(0.001, dt));
+    if (cur) {
+      const to = getPose();
+      const k = 1 - Math.pow(0.006, dt);
+      for (const key in cur) cur[key] = lerp(cur[key], to[key], k);
+    }
     pointer.sx = lerp(pointer.sx, pointer.x, 0.06);
     pointer.sy = lerp(pointer.sy, pointer.y, 0.06);
     draw();
@@ -305,4 +319,5 @@ export function initLens(canvas, { getProgress, reduced, onReady, pose }) {
   resize();
   wake();
   onReady?.();
+  return { refresh() { if (cur) Object.assign(cur, getPose()); draw(); } };
 }

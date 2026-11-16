@@ -2,7 +2,9 @@
 
 Landing page para **Esteban Negrete**, técnico que repara cámaras y lentes a domicilio en Quito (sin local físico) y que además trabaja como fotógrafo.
 
-**Demo en vivo:** https://asistec-eos.vercel.app
+> **Rama `taller`:** versión nueva, solo del taller de reparación (sin fotografía), con capítulos numerados y una vitrina de fallas sobre el lente 3D. La demo original vive en la rama `master`.
+
+**Demo en vivo (rama `master`):** https://asistec-eos.vercel.app
 
 > **Estado: demo para presentar al cliente.** Teléfono, RUC, horario, servicios, respuestas de preguntas frecuentes y fotografías son datos de muestra marcados con `TODO: dato real` en el código. Está publicada como demo, sin indexar en buscadores.
 
